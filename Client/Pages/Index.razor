@@ -1,0 +1,39 @@
+﻿@page "/"
+using System.Text.Json;
+
+<h1>Lista de produtos</h1>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in resultado){
+            <tr>
+                <td>@item.nome</td>
+                <td>@item.descricao</td>
+                <td>@item.valor</td>
+                <td> 
+                    <button type="button" class="btn btn-primary">Editar</button>
+                    <button type="button" class="btn btn-secondary">Apagar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+    public class Produto {
+        public string Nome { get; set; };
+        public string Descricao { get; set; };
+        public decimal Valor { get; set; };
+    }
+}
+
+@* 
+<SurveyPrompt Title="How is Blazor working for you?" /> *@
