@@ -1,5 +1,7 @@
 ﻿@page "/"
-using System.Text.Json;
+@using System.Text.Json;
+@using System.Net.Http;
+@inject HttpClient Http;
 
 <h1>Lista de produtos</h1>
 
@@ -14,7 +16,7 @@ using System.Text.Json;
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in resultado){
+        @foreach (var item in produtoList){
             <tr>
                 <td>@item.nome</td>
                 <td>@item.descricao</td>
@@ -27,12 +29,29 @@ using System.Text.Json;
         }
     </tbody>
 </table>
+
 @code {
-    public class Produto {
-        public string Nome { get; set; };
-        public string Descricao { get; set; };
-        public decimal Valor { get; set; };
+    private List<Produto> produtoList = new List<Produto>();
+
+    private Produto produto = new Produto();
+    private EditContext editContext { get; set; }
+
+
+    protected override async Task OnInitializedAsync() {
+        var Produtos = await Http.GetFromJsonAsync<List<Produto>>("/Register/List");
+        foreach (var item in produto){
+            produtoList.Add(item);
+        }
     }
+
+    private async Task HandleValidSubmit(){
+        var teste = await Http.PostAsJsonAsync("/Register/Create", produto);
+    }
+
+    private void HandleReset(){
+        produto = new Produto();
+        editContext = new EditContext(produto);
+    } 
 }
 
 @* 
